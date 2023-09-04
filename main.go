@@ -78,3 +78,8 @@ type ResponseReport struct {
 	Response
 	Data Report `json:"data"`
 }
+
+
+//TODO: create db schema
+//TODO: create migration endpoint
+//TODO: store report to the db (sqlite3/postgres), if use pgsql use https://www.cockroachlabs.com/

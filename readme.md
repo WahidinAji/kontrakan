@@ -44,3 +44,9 @@
 # Migration
 - api/v1/migrate/on
 - api/v1/migrate/off
+
+
+
+# Run
+- make setup-dev
+- /bin/air
