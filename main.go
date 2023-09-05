@@ -90,7 +90,7 @@ func main() {
 			return c.JSON(MigrateResponse{
 				Response: Response{
 					Status:  200,
-					Message: "cache not found",
+					Message: "migration failed",
 				},
 				Data: ok,
 			})
