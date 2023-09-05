@@ -24,7 +24,7 @@ func (m *Migration) migrate(ctx context.Context) error {
 	}
 	tx.Begin(ctx)
 
-	queries := v1()
+	queries := v1dot1()
 
 	for _, q := range queries {
 		_, err := tx.Exec(ctx, q)
@@ -56,5 +56,16 @@ func v1() []string {
 			created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 			updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 		)`,
+	}
+}
+
+func v1dot1() []string {
+	return []string{
+		`
+		ALTER TABLE reports ALTER COLUMN image TYPE TEXT
+		`,
+		`
+		ALTER TABLE reports ALTER COLUMN id TYPE BIGINT
+		`,
 	}
 }
