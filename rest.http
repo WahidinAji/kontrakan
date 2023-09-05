@@ -1,10 +1,20 @@
 # Migration
 
 ## Migration on
-GET http://127.0.0.1:3000/migrate/uname/password/on
+POST http://127.0.0.1:3000/migrate/status
+{
+    "uname": "uname",
+    "password": "password",
+    "status": true
+}
 
 ## Migration off
-GET http://127.0.0.1:3000/migrate/uname/password/off
+POST http://127.0.0.1:3000/migrate/status
+{
+    "uname": "uname",
+    "password": "password",
+    "status": false
+}
 
 ## Migrate the database
 POST http://127.0.0.1:3000/api/v1/migrate
