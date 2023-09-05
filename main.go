@@ -22,12 +22,6 @@ func main() {
 	}
 	defer pool.Close()
 
-	// db, err := pool.Acquire(ctx)
-	// if err != nil {
-	// 	log.Fatal().Err(err).Msg("Unable to acquire connection")
-	// }
-	// defer db.Release()
-
 	m := newMigration(pool)
 
 	cacheConf := cache.New(5*time.Minute, 10*time.Minute)
@@ -45,13 +39,13 @@ func main() {
 	})
 
 	//setup migration setting
-	app.Get("/migrate/:name/:password/on", func(c *fiber.Ctx) error {
-		name := c.Params("name")
-		password := c.Params("password")
-
-		user := User{
-			Name:     name,
-			Password: password,
+	app.Post("/migrate/status", func(c *fiber.Ctx) error {
+		var user MigratorStatus
+		if err := c.BodyParser(&user); err != nil {
+			return c.Status(400).JSON(Response{
+				Status:  400,
+				Message: "Invalid request",
+			})
 		}
 		u := user.validateUser()
 		if len(u) > 0 {
@@ -63,40 +57,30 @@ func main() {
 			})
 		}
 
-		//setup cache migrate is on
-		cacheConf.Set("migrate", 1, cache.DefaultExpiration)
-
-		return c.JSON(fiber.Map{
-			"status":  200,
-			"message": "Migration on success",
-		})
-	})
-	app.Get("/migrate/:name/:password/off", func(c *fiber.Ctx) error {
-		name := c.Params("name")
-		password := c.Params("password")
-
-		user := User{
-			Name:     name,
-			Password: password,
-		}
-		u := user.validateUser()
-		if len(u) > 0 {
-			log.Info().Msg("User not valid while try to turn off migration")
-			return c.JSON(Response{
-				Status:     400,
-				Message:    "Migration failed",
-				FormErrors: u,
+		log.Info().Interface("user", user).Msg("User valid while try to turn on migration")
+		if user.Status {
+			//set cache migrate to 1. it means migration is on
+			cacheConf.Set("migrate", 1, cache.DefaultExpiration)
+			return c.JSON(MigrateResponse{
+				Response: Response{
+					Status:  200,
+					Message: "Migration on success",
+				},
+				Data: user.Status,
 			})
 		}
 
-		//update cache migrate is off
+		//set cache migrate to 0. it means migration is off
 		cacheConf.Set("migrate", 0, cache.DefaultExpiration)
-
-		return c.JSON(Response{
-			Status:  200,
-			Message: "Migration off success",
+		return c.JSON(MigrateResponse{
+			Response: Response{
+				Status:  200,
+				Message: "Migration off success",
+			},
+			Data: user.Status,
 		})
 	})
+	
 
 	api := app.Group("/api/v1")
 	api.Post("/migrate/", func(c *fiber.Ctx) error {
@@ -218,26 +202,3 @@ func main() {
 
 	log.Fatal().Err(app.Listen(fmt.Sprintf(":%s", portString))).Msg("Server is running")
 }
-
-const (
-	userDefault = "user"
-	pwDefault   = "password"
-)
-
-type ListResReport struct {
-	Response
-	Data []Report `json:"data"`
-}
-
-type ResponseReport struct {
-	Response
-	Data Report `json:"data"`
-}
-type MigrateResponse struct {
-	Response
-	Data bool `json:"data"`
-}
-
-//TODO: create db schema
-//TODO: create migration endpoint
-//TODO: store report to the db (sqlite3/postgres), if use pgsql use https://www.cockroachlabs.com/

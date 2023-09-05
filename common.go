@@ -38,3 +38,27 @@ type FormError struct {
 type Migration struct {
 	DB *pgxpool.Pool
 }
+
+type MigratorStatus struct {
+	User
+	Status bool `json:"status"`
+}
+
+const (
+	userDefault = "user"
+	pwDefault   = "password"
+)
+
+type ListResReport struct {
+	Response
+	Data []Report `json:"data"`
+}
+
+type ResponseReport struct {
+	Response
+	Data Report `json:"data"`
+}
+type MigrateResponse struct {
+	Response
+	Data bool `json:"data"`
+}
