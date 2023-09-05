@@ -1,0 +1,11 @@
+# Migration
+
+## Migration on
+GET http://127.0.0.1:3000/migrate/uname/password/on
+
+## Migration off
+GET http://127.0.0.1:3000/migrate/uname/password/off
+
+## Migrate the database
+POST http://127.0.0.1:3000/api/v1/migrate
+

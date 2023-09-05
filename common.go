@@ -1,6 +1,9 @@
 package main
 
-import "gopkg.in/guregu/null.v4"
+import (
+	"github.com/jackc/pgx/v5/pgxpool"
+	"gopkg.in/guregu/null.v4"
+)
 
 type User struct {
 	Name      string      `json:"name"`
@@ -14,6 +17,9 @@ type Report struct {
 	Type        string      `json:"type"`
 	Description string      `json:"description"`
 	Image       string      `json:"image"`
+	UserReport  string      `json:"user_report"`
+	Price       float64     `json:"price"`
+	UserId      null.String `json:"user_id"`
 	CreatedAt   null.String `json:"created_at"`
 	UpdatedAt   null.String `json:"updated_at"`
 }
@@ -27,4 +33,8 @@ type Response struct {
 type FormError struct {
 	Field   string `json:"field"`
 	Message string `json:"message"`
+}
+
+type Migration struct {
+	DB *pgxpool.Pool
 }

@@ -1,5 +1,7 @@
 package main
 
+var ()
+
 func (r Report) validateReport() []FormError {
 	var formErrors []FormError
 
@@ -30,13 +32,26 @@ func (r Report) validateReport() []FormError {
 			Message: "Image cannot be empty",
 		})
 	}
+	if r.UserReport == "" {
+		formErrors = append(formErrors, FormError{
+			Field:   "user_report",
+			Message: "User report cannot be empty",
+		})
+	}
+
+	if r.Price <= 0 {
+		formErrors = append(formErrors, FormError{
+			Field:   "price",
+			Message: "Price cannot be zero or negative",
+		})
+	}
 
 	return formErrors
 }
 
 func (u User) validateUser() []FormError {
-	unameAji := envString("UNAME_AJI", aji)
-	pwAji := envString("PW_AJI", migrationOnPw)
+	unameAji := envString("UNAME_AJI", userDefault)
+	pwAji := envString("PW_AJI", pwDefault)
 
 	var formErrors []FormError
 

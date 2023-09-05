@@ -1,0 +1,17 @@
+#!/bin/bash
+
+bin_dir="./bin"
+if [ ! -d "$bin_dir" ]; then
+  make setup-dev
+fi
+
+temp_dir="./tmp"
+if [ -d "$temp_dir" ]; then
+  rm -r ./tmp
+fi
+
+export UNAME_AJI="aji"
+export PW_AJI="kontrakan"
+export DB_URL="postgresql://postgres:password@localhost:5432/kontrakan?sslmode=disable"
+
+./bin/air
