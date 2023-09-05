@@ -10,8 +10,10 @@ if [ -d "$temp_dir" ]; then
   rm -r ./tmp
 fi
 
-export UNAME_AJI="aji"
-export PW_AJI="kontrakan"
-export DB_URL="postgresql://postgres:password@localhost:5432/kontrakan?sslmode=disable"
+export UNAME_MIGRATION="uname"
+export PW_MIGRATION="password"
+export DB_URL="postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable"
+export PORT="3000"
+
 
 ./bin/air

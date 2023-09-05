@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -14,6 +15,7 @@ func main() {
 
 	ctx := context.Background()
 	dbString := envString("DB_URL", "postgresql://postgres:password@localhost:5432/kontrakan?sslmode=disable")
+	portString := envString("PORT", "3000")
 	pool, err := pgxpool.New(ctx, dbString)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Unable to connect to database")
@@ -206,7 +208,7 @@ func main() {
 		})
 	})
 
-	log.Fatal().Err(app.Listen(":3000")).Msg("Server is running")
+	log.Fatal().Err(app.Listen(fmt.Sprintf(":%s", portString))).Msg("Server is running")
 }
 
 const (

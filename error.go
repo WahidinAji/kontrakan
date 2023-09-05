@@ -50,8 +50,8 @@ func (r Report) validateReport() []FormError {
 }
 
 func (u User) validateUser() []FormError {
-	unameAji := envString("UNAME_AJI", userDefault)
-	pwAji := envString("PW_AJI", pwDefault)
+	uname := envString("UNAME_MIGRATION", userDefault)
+	pw := envString("PW_MIGRATION", pwDefault)
 
 	var formErrors []FormError
 
@@ -69,13 +69,13 @@ func (u User) validateUser() []FormError {
 		})
 	}
 
-	if u.Name != unameAji {
+	if u.Name != uname {
 		formErrors = append(formErrors, FormError{
 			Field:   "name",
 			Message: "Name is not valid",
 		})
 	}
-	if u.Password != pwAji {
+	if u.Password != pw {
 		formErrors = append(formErrors, FormError{
 			Field:   "password",
 			Message: "Password is not valid",
