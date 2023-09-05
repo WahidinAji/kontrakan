@@ -30,7 +30,7 @@ func main() {
 
 	//log all request
 	app.Use(func(c *fiber.Ctx) error {
-		log.Trace().Msgf("Method: %s \t Path: %s \t Body: %s", c.Method(), c.Path(), c.Body())
+		log.Trace().Msgf("Method: %s \t Path: %s", c.Method(), c.Path())
 		return c.Next()
 	})
 
@@ -80,7 +80,6 @@ func main() {
 			Data: user.Status,
 		})
 	})
-	
 
 	api := app.Group("/api/v1")
 	api.Post("/migrate/", func(c *fiber.Ctx) error {
