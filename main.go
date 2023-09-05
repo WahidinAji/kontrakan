@@ -33,9 +33,17 @@ func main() {
 	cacheConf := cache.New(5*time.Minute, 10*time.Minute)
 
 	app := fiber.New()
+
+	//log all request
+	app.Use(func(c *fiber.Ctx) error {
+		log.Info().Msgf("Method: %s \t Path: %s \t Body: %s", c.Method(), c.Path(), c.Body())
+		return c.Next()
+	})
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
 	})
+	
 	//setup migration setting
 	app.Get("/migrate/:name/:password/on", func(c *fiber.Ctx) error {
 		name := c.Params("name")
