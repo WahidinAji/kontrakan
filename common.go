@@ -16,7 +16,7 @@ type Report struct {
 	Title       string      `json:"title"`
 	Type        string      `json:"type"`
 	Description string      `json:"description"`
-	Image       string      `json:"image"`
+	Image       null.String `json:"image"`
 	UserReport  string      `json:"user_report"`
 	Price       float64     `json:"price"`
 	UserId      null.String `json:"user_id"`
@@ -61,4 +61,8 @@ type ResponseReport struct {
 type MigrateResponse struct {
 	Response
 	Data bool `json:"data"`
+}
+
+type ReportConnection struct {
+	DB *pgxpool.Pool
 }

@@ -26,12 +26,6 @@ func (r Report) validateReport() []FormError {
 		})
 	}
 
-	if r.Image == "" {
-		formErrors = append(formErrors, FormError{
-			Field:   "image",
-			Message: "Image cannot be empty",
-		})
-	}
 	if r.UserReport == "" {
 		formErrors = append(formErrors, FormError{
 			Field:   "user_report",

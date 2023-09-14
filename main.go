@@ -190,12 +190,23 @@ func main() {
 			})
 		}
 
+		newReport := NewReportConnection(pool)
+
+		res, err := newReport.Save(ctx, report)
+		if err != nil {
+			log.Error().Err(err).Msg("Unable to save report")
+			return c.JSON(Response{
+				Status:  500,
+				Message: "Unable to save report",
+			})
+		}
+
 		return c.JSON(ResponseReport{
 			Response: Response{
 				Status:  200,
 				Message: "Report created successfully",
 			},
-			Data: report,
+			Data: res,
 		})
 	})
 
